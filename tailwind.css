@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+
+/* Paleta neutra escura (não tão escura) */
+:root {
+    --bg: 20 14% 9%;
+    /* #181616 aprox */
+    --panel: 24 8% 14%;
+    /* cartas */
+    --muted: 28 7% 30%;
+    --text: 45 20% 92%;
+    --accent: 210 90% 60%;
+    /* azul sutil */
+    --neon: 180 100% 67%;
+    /* ciano/teal para glow */
+}
+
+
+html {
+    color-scheme: dark;
+}
+
+body {
+    @apply min-h-screen bg-[hsl(var(--bg))] text-[hsl(var(--text))] antialiased;
+}
+
+
+/* Glass/blur helpers */
+.glass {
+    @apply bg-[hsl(var(--panel)/0.7)] backdrop-blur-md border border-white/5 shadow-xl;
+}
+
+
+/* Gradiente de fundo animado sutil */
+.bg-aurora {
+    background: radial-gradient(60rem 40rem at 80% -10%, hsl(var(--accent)/0.18), transparent 55%),
+        radial-gradient(50rem 40rem at -10% 110%, hsl(var(--neon)/0.12), transparent 55%),
+        radial-gradient(30rem 25rem at 120% 120%, #22d3ee22, transparent 55%);
+}
+
+
+/* Tilt hover */
+.tilt {
+    transform-style: preserve-3d;
+    transition: transform 300ms ease, box-shadow 300ms ease;
+}
+
+.tilt:hover {
+    transform: translateY(-4px) rotateX(3deg) rotateY(-3deg);
+}
