@@ -6,8 +6,8 @@ type Project = {
   title: string
   role?: string
   description: string
-  highlights: string[]
-  tech: string[]
+  highlights: readonly string[]
+  tech: readonly string[]
   github: string
 }
 

@@ -1,15 +1,19 @@
+import { useState } from 'react'
 import Navbar from './components/Navbar'
 import Section from './components/Section'
 import ProjectCard from './components/ProjectCard'
 import Footer from './components/Footer'
 import { projects } from './data/projects'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Github, Linkedin, Mail } from 'lucide-react'
 import { TypeAnimation } from 'react-type-animation'
 import { FaPython, FaReact, FaDocker, FaHtml5, FaCss3Alt, FaJs, FaGithub, FaJava } from 'react-icons/fa'
 import { SiTypescript, SiPostgresql } from 'react-icons/si'
 
 export default function App() {
+  const [current, setCurrent] = useState(0)
+
   return (
     <div>
       <Navbar />
@@ -118,13 +122,82 @@ export default function App() {
         </motion.div>
       </Section>
 
-      <Section id="projetos" title="Projetos em Destaque" subtitle="Alguns trabalhos que mostram meu foco em qualidade, performance e experiência.">
-        <div className="grid gap-6 md:grid-cols-2">
-          {projects.map((p, i) => (
-            <ProjectCard key={p.title} p={p as any} i={i} />
-          ))}
-        </div>
-      </Section>
+      <Section
+  id="projetos"
+  title="Projetos em Destaque"
+  subtitle="Alguns trabalhos que mostram meu foco em qualidade, performance e experiência."
+>
+  <div className="relative flex items-center justify-center w-full overflow-hidden py-10">
+
+    {/* Botão Esquerdo */}
+    <button
+      onClick={() => setCurrent((prev) => (prev === 0 ? projects.length - 1 : prev - 1))}
+      className="absolute left-2 md:left-10 z-20 p-3 rounded-full border border-white/20 hover:bg-white/10 transition"
+    >
+      <ChevronLeft className="w-6 h-6" />
+    </button>
+
+    {/* Container principal */}
+    <div className="relative flex items-center justify-center w-full md:w-[80%] h-[550px] perspective-[2000px]">
+      {projects.map((p, i) => {
+        const index =
+          (i - current + projects.length) % projects.length // mantém circular
+        let x = 0
+        let scale = 1
+        let opacity = 1
+        let zIndex = 1
+        let rotateY = 0
+
+        if (index === 0) {
+          x = 0
+          scale = 1
+          zIndex = 3
+          rotateY = 0
+        } else if (index === 1) {
+          x = 300
+          scale = 0.85
+          opacity = 0.7
+          zIndex = 2
+          rotateY = -25
+        } else if (index === projects.length - 1) {
+          x = -300
+          scale = 0.85
+          opacity = 0.7
+          zIndex = 2
+          rotateY = 25
+        } else {
+          x = 0
+          scale = 0.5
+          opacity = 0
+          zIndex = 0
+          rotateY = 0
+        }
+
+        return (
+          <motion.div
+            key={p.title}
+            className="absolute w-[80%] md:w-[55%]"
+            animate={{ x, scale, opacity, rotateY, zIndex }}
+            transition={{
+              type: 'spring',
+              stiffness: 100,
+              damping: 20,
+            }}
+          >
+            <ProjectCard p={p} i={i} />
+          </motion.div>
+        )
+      })}
+    </div>
+
+    <button
+      onClick={() => setCurrent((prev) => (prev === projects.length - 1 ? 0 : prev + 1))}
+      className="absolute right-2 md:right-10 z-20 p-3 rounded-full border border-white/20 hover:bg-white/10 transition"
+    >
+      <ChevronRight className="w-6 h-6" />
+    </button>
+  </div>
+</Section>
 
       <Section id="sobre" title="Sobre mim" subtitle="Desenvolvedor que une backend sólido com frontends caprichados.">
         <div className="grid gap-8 md:grid-cols-2">
