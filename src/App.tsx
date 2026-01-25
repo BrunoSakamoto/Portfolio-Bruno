@@ -14,6 +14,12 @@ import { SiTypescript, SiPostgresql, SiGooglecloud, SiApachespark, SiBitbucket, 
 export default function App() {
   const [current, setCurrent] = useState(0)
 
+  const hoverEffect = {
+    scale: 1.03,
+    y: -5,     
+    transition: { type: "spring", stiffness: 300, damping: 20 } 
+  }
+
   return (
     <div>
       <Navbar />
@@ -133,7 +139,6 @@ export default function App() {
         subtitle="Alguns trabalhos que mostram meu foco em qualidade, performance e experiência."
       >
         <div className="relative flex items-center justify-center w-full overflow-hidden py-10">
-          {/* Botão Esquerdo */}
           <button
             onClick={() => setCurrent((prev) => (prev === 0 ? projects.length - 1 : prev - 1))}
             className="absolute left-2 md:left-10 z-20 p-3 rounded-full border border-white/20 hover:bg-white/10 transition"
@@ -141,7 +146,6 @@ export default function App() {
             <ChevronLeft className="w-6 h-6" />
           </button>
 
-          {/* Container principal */}
           <div className="relative flex items-center justify-center w-full md:w-[80%] h-[550px] perspective-[2000px]">
             {projects.map((p, i) => {
               const index = (i - current + projects.length) % projects.length
@@ -184,34 +188,26 @@ export default function App() {
       </Section>
 
       <Section id="sobre" title="Sobre mim" subtitle="Desenvolvedor FullStack e Engenheiro de Dados em evolução.">
-        <motion.div
-          className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-8 justify-items-center mt-8"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          variants={{
-            hidden: { opacity: 0, y: 30 },
-            visible: {
-              opacity: 1,
-              y: 0,
-              transition: { staggerChildren: 0.1 },
-            },
-          }}
-        ></motion.div>
         <div className="grid gap-8 md:grid-cols-2">
-          <div className="glass rounded-2xl p-6">
+          <motion.div
+            className="glass rounded-2xl p-6"
+            whileHover={hoverEffect}
+          >
             <h3 className="text-lg font-semibold">Stack & Dados</h3>
-            {/* Atualizei o texto descritivo para incluir dados */}
             <p className="mt-2 text-white/80 text-sm">
               Python, PySpark e BigQuery para dados. React e FastAPI para aplicações. Infra com Docker e orquestração via Airflow.
             </p>
             <ul className="mt-4 space-y-2 text-sm text-white/90">
               <li>• API bem definida, autenticação e testes.</li>
-              <li>• Pipelines ETL e manipulação de Big Data.</li> {/* Novo item */}
+              <li>• Pipelines ETL e manipulação de Big Data.</li>
               <li>• CI/CD (Bitbucket/GitHub) e versionamento.</li>
             </ul>
-          </div>
-          <div className="glass rounded-2xl p-6">
+          </motion.div>
+
+          <motion.div
+            className="glass rounded-2xl p-6"
+            whileHover={hoverEffect}
+          >
             <h3 className="text-lg font-semibold">Destaques de UI/UX</h3>
             <p className="mt-2 text-white/80 text-sm">Microinterações, transições sutis, foco no conteúdo e na hierarquia visual.</p>
             <ul className="mt-4 space-y-2 text-sm text-white/90">
@@ -219,24 +215,26 @@ export default function App() {
               <li>• Navegação fixada com blur e mudança de opacidade ao scroll.</li>
               <li>• Interfaces limpas mesmo em dashboards complexos.</li>
             </ul>
-          </div>
+          </motion.div>
         </div>
-        
       </Section>
 
       <Section id="objetivos" title="Objetivos" subtitle="Onde quero chegar como profissional de tecnologia.">
-        {/* Mudei o grid para md:grid-cols-2 para acomodar 4 itens (2x2) de forma bonita */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {[
-            { t: 'Engenharia de Dados', d: 'Dominar processamento em BigQuery, pipelines com Airflow e Spark.' }, // Novo Card
+            { t: 'Engenharia de Dados', d: 'Dominar processamento em BigQuery, pipelines com Airflow e Spark.' },
             { t: 'FullStack Sólido', d: 'Dominar arquiteturas modernas, testes e observabilidade.' },
             { t: 'Backend Escalável', d: 'Projetar APIs robustas e performáticas com boas práticas.' },
             { t: 'Frontend Refinado', d: 'Interfaces elegantes, acessíveis e rápidas.' },
           ].map((b) => (
-            <div key={b.t} className="glass rounded-2xl p-6">
+            <motion.div
+              key={b.t}
+              className="glass rounded-2xl p-6"
+              whileHover={hoverEffect}
+            >
               <h4 className="font-semibold text-blue-300">{b.t}</h4>
               <p className="mt-2 text-sm text-white/80">{b.d}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </Section>
