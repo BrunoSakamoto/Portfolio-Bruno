@@ -46,7 +46,7 @@ export const projects: readonly Project[] = [
     name: 'Ônibus em tempo real',
     category: 'Streaming com Kafka',
     description:
-      'Acompanha os cerca de 3.500 ônibus do Rio em tempo real. Um produtor lê a API de GPS da Prefeitura a cada 30 segundos e publica no Kafka; o processador grava no PostgreSQL e calcula a velocidade de cada linha em janelas de 5 minutos pelo horário do GPS, porque 16% das posições chegam atrasadas. Derrubar o processador no meio de um lote não duplica nem perde nada. O mapa desta pasta é um recorte real dessa coleta.',
+      'Acompanha os cerca de 3.500 ônibus do Rio em tempo real. Um produtor lê a API de GPS da Prefeitura a cada 30 segundos e publica no Kafka; o processador grava no PostgreSQL e calcula a velocidade de cada linha em janelas de 5 minutos pelo horário do GPS, porque 16% das posições chegam atrasadas. Derrubar o processador no meio de um lote não duplica nem perde nada. O log desta pasta é o da execução real, com uma queda da API no meio, e os pontos no topo da página são um recorte dessa coleta.',
     tech: ['Python', 'Kafka', 'PostgreSQL', 'FastAPI', 'Docker'],
     github: 'https://github.com/BrunoSakamoto/onibus-tempo-real',
     field: 'black',

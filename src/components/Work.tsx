@@ -3,13 +3,13 @@ import { projects, type ProjectId } from '../data/projects'
 import AnpUI from './fragments/AnpUI'
 import NotasUI from './fragments/NotasUI'
 import RastreadorUI from './fragments/RastreadorUI'
-import OnibusUI from './fragments/OnibusUI'
+import StreamUI from './fragments/StreamUI'
 
 const screens: Record<ProjectId, ReactNode> = {
   anp: <AnpUI />,
   notas: <NotasUI />,
   rastreador: <RastreadorUI />,
-  onibus: <OnibusUI />,
+  onibus: <StreamUI />,
 }
 
 export default function Work() {
@@ -18,7 +18,7 @@ export default function Work() {
       <div className="work__head grid12">
         <h2 id="projetos-title" className="work__title" data-reveal>Os projetos</h2>
         <p className="work__note" data-reveal style={{ '--d': 1 } as CSSProperties}>
-          Quatro projetos, arquivados como pastas. Role para abrir cada uma; o último roda aqui com dados reais.
+          Quatro projetos, arquivados como pastas. Role para abrir cada uma: dá para rodar a DAG de novo, trocar a versão da nota e arrastar as candidaturas.
         </p>
       </div>
 
