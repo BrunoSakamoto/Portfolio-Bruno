@@ -1,15 +1,15 @@
 import type { CSSProperties, ReactNode } from 'react'
 import { projects, type ProjectId } from '../data/projects'
-import TradutorUI from './fragments/TradutorUI'
-import LeitorUI from './fragments/LeitorUI'
-import GameUI from './fragments/GameUI'
-import QrLive from './fragments/QrLive'
+import AnpUI from './fragments/AnpUI'
+import NotasUI from './fragments/NotasUI'
+import RastreadorUI from './fragments/RastreadorUI'
+import OnibusUI from './fragments/OnibusUI'
 
 const screens: Record<ProjectId, ReactNode> = {
-  tradutor: <TradutorUI />,
-  leitor: <LeitorUI />,
-  jogo: <GameUI />,
-  qrcode: <QrLive />,
+  anp: <AnpUI />,
+  notas: <NotasUI />,
+  rastreador: <RastreadorUI />,
+  onibus: <OnibusUI />,
 }
 
 export default function Work() {
@@ -18,7 +18,7 @@ export default function Work() {
       <div className="work__head grid12">
         <h2 id="projetos-title" className="work__title" data-reveal>Os projetos</h2>
         <p className="work__note" data-reveal style={{ '--d': 1 } as CSSProperties}>
-          Quatro trabalhos, arquivados como pastas. Role para abrir cada uma; o último funciona aqui mesmo.
+          Quatro projetos, arquivados como pastas. Role para abrir cada uma; o último roda aqui com dados reais.
         </p>
       </div>
 

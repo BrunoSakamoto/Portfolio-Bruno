@@ -3,23 +3,23 @@ import { motion, useScroll, useTransform, type MotionValue } from 'framer-motion
 import { useStaticMode } from '../hooks/useStaticMode'
 
 const fields = [
-  { key: 'emitente', value: '"Padaria Pão de Cada Dia Ltda"' },
-  { key: 'cnpj', value: '"12345678000190"' },
-  { key: 'emissao', value: '"2026-10-14"' },
-  { key: 'itens', value: '3' },
-  { key: 'total', value: '54.70' },
+  { key: 'emitente_nome', value: '"Padaria Pão de Cada Dia"' },
+  { key: 'emitente_cnpj', value: '"11222333000181"' },
+  { key: 'data_emissao', value: '"2026-10-14"' },
+  { key: 'itens', value: '[3 itens]' },
+  { key: 'valor_total', value: '54.70' },
 ]
 
 const rows = [
-  { id: 1043, emitente: 'Mercado Bom Preço', total: '212,35' },
-  { id: 1042, emitente: 'Farmácia Central', total: '48,90' },
-  { id: 1041, emitente: 'Posto Rodovia', total: '180,00' },
+  { doc: 'nota-043', versao: 'foto boa', campos: '9 de 9' },
+  { doc: 'nota-042', versao: 'PDF', campos: '9 de 9' },
+  { doc: 'nota-041', versao: 'foto ruim', campos: '9 de 9' },
 ]
 
 const steps = [
-  { lead: 'Extrair.', text: 'O Gemini lê o PDF e encontra os campos.' },
-  { lead: 'Validar.', text: 'O FastAPI confere e normaliza cada valor.' },
-  { lead: 'Gravar.', text: 'O Postgres guarda a nota como uma linha.' },
+  { lead: 'Extrair.', text: 'O Gemini lê o PDF ou a foto e devolve JSON no esquema.' },
+  { lead: 'Validar.', text: 'Dígitos do CNPJ, chave de acesso e soma dos itens.' },
+  { lead: 'Medir.', text: 'Cada campo é comparado com o gabarito.' },
 ]
 
 function useRange(p: MotionValue<number>, a: number, b: number, from = 0, to = 1) {
@@ -84,7 +84,7 @@ export default function PipelineScene() {
     >
       <div className="scene__stage">
         <div className="scene__head grid12">
-          <h2 id="pipeline-title" className="scene__title">Da nota fiscal ao banco</h2>
+          <h2 id="pipeline-title" className="scene__title">Da foto da nota ao dado conferido</h2>
           <div className="scene__steps">
             {steps.map((_, i) =>
               isStatic ? (
@@ -98,11 +98,11 @@ export default function PipelineScene() {
 
         <div className="scene__body grid12">
           <motion.figure className="scene__doc" style={{ opacity: isStatic ? 1 : docO, margin: 0 }} data-ui>
-            <figcaption className="scene__label">nota-1044.pdf</figcaption>
+            <figcaption className="scene__label">nota-044.jpg</figcaption>
             <div className="paper">
               <p className="paper__brand"><Highlight p={p} i={0}>Padaria Pão de Cada Dia Ltda</Highlight></p>
               <p className="paper__meta">
-                CNPJ <Highlight p={p} i={1}>12.345.678/0001-90</Highlight><br />
+                CNPJ <Highlight p={p} i={1}>11.222.333/0001-81</Highlight><br />
                 Emitida em <Highlight p={p} i={2}>14/10/2026</Highlight>
               </p>
               <Highlight p={p} i={3} block>
@@ -117,7 +117,7 @@ export default function PipelineScene() {
           </motion.figure>
 
           <figure className="scene__json" style={{ margin: 0 }}>
-            <figcaption className="scene__label">Resposta do POST /notas</figcaption>
+            <figcaption className="scene__label">Resposta do Gemini</figcaption>
             <pre className="code" data-ui><code>
               <span>{'{'}</span>
               {fields.map((f, i) => (
@@ -133,16 +133,16 @@ export default function PipelineScene() {
 
           <div className="scene__table" data-ui>
             <table className="table">
-              <caption>notas_fiscais</caption>
+              <caption>avaliação contra o gabarito</caption>
               <thead>
-                <tr><th scope="col">id</th><th scope="col">emitente</th><th scope="col">total</th></tr>
+                <tr><th scope="col">documento</th><th scope="col">versão</th><th scope="col">campos certos</th></tr>
               </thead>
               <tbody>
                 <motion.tr className="is-new" style={{ opacity: rowO, y: rowY }}>
-                  <td>1044</td><td>Padaria Pão de Cada Dia</td><td>54,70</td>
+                  <td>nota-044</td><td>foto ruim</td><td>9 de 9</td>
                 </motion.tr>
                 {rows.map((r) => (
-                  <tr key={r.id}><td>{r.id}</td><td>{r.emitente}</td><td>{r.total}</td></tr>
+                  <tr key={r.doc}><td>{r.doc}</td><td>{r.versao}</td><td>{r.campos}</td></tr>
                 ))}
               </tbody>
             </table>

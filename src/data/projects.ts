@@ -1,4 +1,4 @@
-export type ProjectId = 'tradutor' | 'leitor' | 'jogo' | 'qrcode'
+export type ProjectId = 'anp' | 'notas' | 'rastreador' | 'onibus'
 
 export type Project = {
   id: ProjectId
@@ -12,43 +12,43 @@ export type Project = {
 
 export const projects: readonly Project[] = [
   {
-    id: 'tradutor',
-    name: 'TradutorDocumentos',
-    category: 'Full stack, Spring Boot e React',
+    id: 'anp',
+    name: 'Combustíveis ANP',
+    category: 'Engenharia de dados em lote',
     description:
-      'Um tradutor de arquivos inteiros. Você entra com a conta Google, envia um DOCX ou PDF e recebe o documento traduzido, com o histórico de tudo o que já passou por ali. O backend em Spring Boot cuida da autenticação com OAuth2 e JWT e conversa com a API de tradução; o React acompanha cada arquivo do envio ao download.',
-    tech: ['Java', 'Spring Boot', 'React', 'OAuth2', 'JWT'],
-    github: 'https://github.com/ProjetoIntegrador4-Semestre/TradutorDocumentos',
+      'Pipeline de ponta a ponta sobre a série histórica de preços de combustíveis da ANP. Baixa os arquivos semestrais, carrega 2,1 milhões de coletas no DuckDB, modela e testa com dbt e roda todo mês no Airflow. Os testes de qualidade pegam problemas reais da fonte, como etanol registrado com preço de gasolina, e um painel em Streamlit responde se posto de bandeira branca é mesmo mais barato.',
+    tech: ['Python', 'Airflow', 'dbt', 'DuckDB', 'Streamlit'],
+    github: 'https://github.com/BrunoSakamoto/combustiveis-anp',
     field: 'mint',
   },
   {
-    id: 'leitor',
-    name: 'Leitor de Documentos',
-    category: 'Full stack, Python e FastAPI',
+    id: 'notas',
+    name: 'Notas fiscais com IA',
+    category: 'IA aplicada, medida contra um gabarito',
     description:
-      'Notas fiscais chegam como PDF e saem como linhas no Postgres. O Gemini lê o documento e encontra emitente, CNPJ, data, itens e total; a API em FastAPI valida e normaliza cada campo antes de gravar. API e banco sobem juntos com Docker Compose, então o projeto roda igual em qualquer máquina.',
-    tech: ['Python', 'FastAPI', 'Postgres', 'Docker', 'Gemini'],
-    github: 'https://github.com/BrunoSakamoto/LeitorDocumentosPython',
+      'Extrai os dados de DANFEs e cupons de NFC-e, em PDF ou foto, com o Gemini e saída estruturada, e mede o acerto campo a campo contra um gabarito sintético com CNPJ, CPF e chave de acesso válidos. Uma linha de base sem IA mostra o que o modelo acrescenta, e uma validação fiscal que não depende do modelo aponta quais notas precisam de revisão humana.',
+    tech: ['Python', 'Gemini', 'Pydantic', 'DuckDB', 'pytest'],
+    github: 'https://github.com/BrunoSakamoto/notas-fiscais-ia',
     field: 'grey',
   },
   {
-    id: 'jogo',
-    name: 'Bytes Brilhantes',
-    category: 'Jogo em Java, orientação a objetos',
+    id: 'rastreador',
+    name: 'Rastreador de candidaturas',
+    category: 'Full stack, Spring Boot e React',
     description:
-      'Um jogo em Java feito para estudar orientação a objetos de verdade, não só em exercício. Cada peça do jogo é uma classe com uma responsabilidade, e os padrões de projeto entram onde resolvem um problema real. A arquitetura é modular, para que uma mudança numa parte não exija mexer em todas as outras.',
-    tech: ['Java', 'POO', 'Design Patterns'],
-    github: 'https://github.com/Game-JAVA/Bytes-brilhantes',
+      'Um quadro para acompanhar a busca de emprego: cada vaga é uma ficha arrastada de etapa em etapa, com o histórico de cada mudança e métricas como taxa de resposta, funil e mediana de dias até a primeira resposta. API em Spring Boot 4 com JWT e PostgreSQL versionado pelo Flyway, interface em React 19 com atualização otimista e testes de integração contra um Postgres de verdade.',
+    tech: ['Java', 'Spring Boot', 'React', 'TypeScript', 'PostgreSQL'],
+    github: 'https://github.com/BrunoSakamoto/rastreador-candidaturas',
     field: 'orange',
   },
   {
-    id: 'qrcode',
-    name: 'Gerador de QR Code',
-    category: 'Backend, CLI, API e interface',
+    id: 'onibus',
+    name: 'Ônibus em tempo real',
+    category: 'Streaming com Kafka',
     description:
-      'Gera QR Codes a partir de qualquer link ou texto, com cor, borda, nível de correção de erro e um logo opcional no centro. Funciona de três jeitos: na linha de comando com Typer, como API REST em FastAPI e numa interface em Streamlit com prévia em tempo real. Sai em PNG para a tela e em SVG para impressão. Experimente aqui mesmo.',
-    tech: ['Python', 'FastAPI', 'Streamlit', 'Typer', 'Pillow'],
-    github: 'https://github.com/BrunoSakamoto/QRcodeGenerator',
+      'Acompanha os cerca de 3.500 ônibus do Rio em tempo real. Um produtor lê a API de GPS da Prefeitura a cada 30 segundos e publica no Kafka; o processador grava no PostgreSQL e calcula a velocidade de cada linha em janelas de 5 minutos pelo horário do GPS, porque 16% das posições chegam atrasadas. Derrubar o processador no meio de um lote não duplica nem perde nada. O mapa desta pasta é um recorte real dessa coleta.',
+    tech: ['Python', 'Kafka', 'PostgreSQL', 'FastAPI', 'Docker'],
+    github: 'https://github.com/BrunoSakamoto/onibus-tempo-real',
     field: 'black',
   },
 ]
