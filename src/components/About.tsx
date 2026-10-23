@@ -1,9 +1,10 @@
 import type { CSSProperties } from 'react'
+import Titulo from './Titulo'
 
 export default function About() {
   return (
     <section className="about" id="sobre" aria-labelledby="sobre-title">
-      <h2 id="sobre-title" className="about__title" data-reveal>Sobre mim</h2>
+      <Titulo id="sobre-title" className="about__title" texto="Sobre mim" />
       <p className="about__text" lang="pt-BR" data-reveal style={{ '--d': 1 } as CSSProperties}>
         <strong>Bruno Araújo Sakamoto</strong> é engenheiro de dados na <span className="mark mark--mint">2RP NET</span>, em{' '}
         <span className="mark mark--grey">Sorocaba</span>, onde começou como estagiário em 2024 e foi efetivado em{' '}

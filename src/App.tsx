@@ -6,11 +6,14 @@ import Stack from './components/Stack'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 import { useReveal } from './hooks/useReveal'
+import { useMagnet } from './hooks/useMagnet'
 
 export default function App() {
   useReveal()
+  useMagnet()
   return (
     <>
+      <div className="progresso" aria-hidden />
       <div className="page">
         <Hero />
         <main>

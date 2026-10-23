@@ -46,17 +46,17 @@ function JsonLine({ p, i, k, v, last }: { p: MotionValue<number>; i: number; k: 
 }
 
 function Step({ p, i }: { p: MotionValue<number>; i: number }) {
-  const bands: [number[], string[]][] = [
-    [[0, 0.3, 0.34], ['#000000', '#000000', '#666666']],
-    [[0.3, 0.34, 0.62, 0.66], ['#666666', '#000000', '#000000', '#666666']],
-    [[0.62, 0.66, 1], ['#666666', '#000000', '#000000']],
+  const bands: [number[], number[]][] = [
+    [[0, 0.3, 0.34], [1, 1, 0.4]],
+    [[0.3, 0.34, 0.62, 0.66], [0.4, 1, 1, 0.4]],
+    [[0.62, 0.66, 1], [0.4, 1, 1]],
   ]
   const [input, output] = bands[i]
-  const color = useTransform(p, input, output)
+  const opacity = useTransform(p, input, output)
   const x = useTransform(p, input, input.length === 3 && i === 0 ? [12, 12, 0] : input.length === 3 ? [0, 12, 12] : [0, 12, 12, 0])
   const step = steps[i]
   return (
-    <motion.p className="scene__step" style={{ color, x }}>
+    <motion.p className="scene__step" style={{ opacity, x }}>
       <b>{step.lead}</b> {step.text}
     </motion.p>
   )

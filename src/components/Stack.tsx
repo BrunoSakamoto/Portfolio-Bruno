@@ -1,9 +1,10 @@
 import type { CSSProperties } from 'react'
+import Titulo from './Titulo'
 
 const groups = [
   {
     name: 'Dados',
-    color: 'var(--mint)',
+    color: 'var(--accent-strong)',
     items: [
       ['Python', 'trabalho e todos os projetos'],
       ['PySpark e BigQuery', 'trabalho, Google Cloud'],
@@ -15,7 +16,7 @@ const groups = [
   },
   {
     name: 'Backend',
-    color: 'var(--orange)',
+    color: 'var(--accent-strong)',
     items: [
       ['Java e Spring Boot', 'Rastreador de candidaturas'],
       ['FastAPI', 'Ônibus em tempo real'],
@@ -26,7 +27,7 @@ const groups = [
   },
   {
     name: 'Frontend',
-    color: 'var(--grey)',
+    color: 'var(--accent-strong)',
     items: [
       ['React', 'este site, Rastreador'],
       ['TypeScript', 'este site, Rastreador'],
@@ -36,7 +37,7 @@ const groups = [
   },
   {
     name: 'Fluxo de trabalho',
-    color: 'var(--black)',
+    color: 'var(--accent-strong)',
     items: [
       ['Testes automatizados', 'pytest, JUnit, Vitest, testes do dbt'],
       ['GitHub Actions', 'CI em todos os projetos'],
@@ -50,7 +51,7 @@ export default function Stack() {
   return (
     <section className="stack" id="ferramentas" aria-labelledby="ferramentas-title">
       <div className="stack__head grid12">
-        <h2 id="ferramentas-title" className="stack__title" data-reveal>Ferramentas</h2>
+        <Titulo id="ferramentas-title" className="stack__title" texto="Ferramentas" />
         <p className="stack__note" data-reveal style={{ '--d': 1 } as CSSProperties}>
           O que uso, e onde cada coisa aparece: no trabalho com dados ou nos projetos acima.
         </p>

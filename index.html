@@ -6,9 +6,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bruno Sakamoto, Engenheiro de Dados</title>
   <meta name="description" content="Portfólio de Bruno Araújo Sakamoto, engenheiro de dados na 2RP NET e desenvolvedor full stack: pipelines em Python, PySpark e Airflow, aplicações em React, FastAPI e Spring Boot." />
-  <meta name="theme-color" content="#ffffff" />
+  <meta name="theme-color" content="#f3f6f9" />
   <link rel="icon" href="/B.png" />
-  <script>document.documentElement.classList.add('js')</script>
+  <script>
+    // Antes do primeiro desenho: marca que há JavaScript e aplica o tema salvo (ou o do sistema),
+    // para a página nunca piscar no tema errado.
+    (function () {
+      var d = document.documentElement
+      d.classList.add('js')
+      var salvo = null
+      try { salvo = localStorage.getItem('tema') } catch (e) {}
+      var escuro = salvo ? salvo === 'escuro' : matchMedia('(prefers-color-scheme: dark)').matches
+      d.dataset.theme = escuro ? 'dark' : 'light'
+    })()
+  </script>
 </head>
 
 <body>
