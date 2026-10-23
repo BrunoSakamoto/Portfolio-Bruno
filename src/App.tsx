@@ -3,6 +3,8 @@ import PipelineScene from './components/PipelineScene'
 import Work from './components/Work'
 import About from './components/About'
 import Stack from './components/Stack'
+import Numeros from './components/Numeros'
+import Experiencia from './components/Experiencia'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 import { useReveal } from './hooks/useReveal'
@@ -17,9 +19,11 @@ export default function App() {
       <div className="page">
         <Hero />
         <main>
+          <Numeros />
           <PipelineScene />
           <Work />
           <About />
+          <Experiencia />
           <Stack />
           <Contact />
         </main>

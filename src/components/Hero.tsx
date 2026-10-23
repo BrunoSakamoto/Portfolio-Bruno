@@ -81,6 +81,7 @@ export default function Hero() {
         <div className="topbar__links">
           <a className="navlink" href="#projetos">Projetos</a>
           <a className="navlink" href="#sobre">Sobre</a>
+          <a className="navlink" href="#experiencia">Experiência</a>
           <a className="navlink" href="#ferramentas">Ferramentas</a>
         </div>
         <div className="topbar__acoes">

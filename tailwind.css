@@ -197,12 +197,10 @@ h1, h2, h3 { text-wrap: balance; font-weight: 600; letter-spacing: -0.04em; line
 /* Barra de progresso da leitura, ligada à rolagem pelo próprio CSS (scroll-driven animations) */
 .progresso { display: none; }
 @supports (animation-timeline: scroll()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .progresso {
-      display: block; position: fixed; inset: 0 0 auto 0; height: 3px; z-index: 50;
-      background: var(--accent-strong); transform-origin: 0 50%;
-      animation: progresso linear both; animation-timeline: scroll(root);
-    }
+  .progresso {
+    display: block; position: fixed; inset: 0 0 auto 0; height: 3px; z-index: 50;
+    background: var(--accent-strong); transform-origin: 0 50%;
+    animation: progresso linear both; animation-timeline: scroll(root);
   }
 }
 @keyframes progresso { from { transform: scaleX(0); } to { transform: scaleX(1); } }
@@ -443,17 +441,24 @@ h1, h2, h3 { text-wrap: balance; font-weight: 600; letter-spacing: -0.04em; line
 .stream { background: var(--code-bg); color: var(--code-ink); }
 .stream .ui__bar { background: #142034; }
 .stream .ui__dot { background: var(--accent); }
-.stream__corpo { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: clamp(14px, 2vw, 28px); padding: clamp(14px, 2vw, 28px); min-height: 0; overflow: hidden; }
-.stream__log { list-style: none; margin: 0; padding: 0; display: grid; align-content: end; gap: 7px; min-height: 0; overflow: hidden; font-size: 13px; line-height: 1.35; }
+.stream__corpo { display: grid; grid-template-rows: minmax(0, 1fr) auto; min-height: 0; overflow: hidden; }
+.stream__mapa { position: relative; min-height: 0; background: #05080d; }
+.mapa-rio { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.stream__hora { position: absolute; left: 14px; top: 12px; margin: 0; display: flex; align-items: baseline; gap: 8px; font-size: 12px; color: #8d9bad; }
+.stream__hora b { padding: 2px 7px; background: var(--accent); color: var(--accent-ink); font-size: 13px; font-variant-numeric: tabular-nums; }
+.stream__legenda { position: absolute; left: 14px; bottom: 12px; margin: 0; padding: 0; list-style: none; display: flex; gap: 12px; font-size: 12px; color: #8d9bad; }
+.stream__legenda li { display: flex; align-items: center; gap: 6px; }
+.stream__legenda i { width: 7px; height: 7px; border-radius: 50%; }
+.stream__numeros { position: absolute; right: 14px; top: 12px; margin: 0; display: grid; gap: 12px; text-align: right; }
+.stream__numeros div { display: grid; gap: 2px; }
+.stream__numeros dt { font-size: 12px; color: #8d9bad; }
+.stream__numeros dd { margin: 0; font-size: clamp(18px, 1.7vw, 26px); font-weight: 600; letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; color: #f4f7fb; }
+.stream__log { list-style: none; margin: 0; padding: 12px 14px; display: grid; gap: 6px; font-size: 12.5px; line-height: 1.3; background: #0b1320; min-height: calc(4 * 1.3em + 3 * 6px + 24px); align-content: end; }
 .stream__log li { display: grid; grid-template-columns: 4.6em 6.4em minmax(0, 1fr); gap: 10px; animation: linha-entra 420ms var(--ease-out) both; }
 .stream__t { color: #6c7a8d; font-variant-numeric: tabular-nums; }
 .stream__quem { color: #8d9bad; }
 .stream__log .is-busca .stream__quem, .stream__log .is-busca span:last-child { color: var(--accent); }
 .stream__log .is-falha span:last-child, .stream__log .is-falha .stream__quem { color: #ff8597; }
-.stream__numeros { margin: 0; display: grid; align-content: end; gap: 18px; min-width: 9.5em; }
-.stream__numeros div { display: grid; gap: 2px; }
-.stream__numeros dt { font-size: 13px; color: #8d9bad; }
-.stream__numeros dd { margin: 0; font-size: clamp(22px, 2.2vw, 34px); font-weight: 600; letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; color: #f4f7fb; }
 @keyframes linha-entra { from { opacity: 0; transform: translateY(10px); } }
 
 /* Combustíveis: a DAG rodando */
@@ -536,6 +541,31 @@ h1, h2, h3 { text-wrap: balance; font-weight: 600; letter-spacing: -0.04em; line
 .mark--mint, .mark--grey, .mark--orange { background: var(--accent-tint); }
 .about__cta { display: inline; background: var(--ink); color: var(--ground); padding: 0 0.15em; -webkit-box-decoration-break: clone; box-decoration-break: clone; transition: background-color var(--t-hover) ease, color var(--t-hover) ease; }
 @media (hover: hover) and (pointer: fine) { .about__cta:hover { background: var(--accent); color: var(--accent-ink); } }
+
+/* ───────── Em números ───────── */
+.numeros { padding: clamp(56px, 7vw, 104px) var(--margin); background: var(--surface); }
+.numeros__lista { list-style: none; margin: 0; padding: 0; row-gap: 40px; }
+.numeros__item { grid-column: span 3; display: grid; gap: 12px; align-content: start; }
+.numeros__valor { font-size: clamp(3rem, 6vw, 6rem); font-weight: 600; letter-spacing: -0.05em; line-height: 0.9; font-variant-numeric: tabular-nums; }
+.numeros__texto { max-width: 26ch; color: var(--muted); }
+.numeros__link { color: var(--accent-strong); font-weight: 500; white-space: nowrap; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 0.2em; transition: text-decoration-color var(--t-hover) ease; }
+@media (hover: hover) and (pointer: fine) { .numeros__link:hover { text-decoration-color: currentColor; } }
+
+/* ───────── Experiência ───────── */
+.exp { padding: 0 var(--margin) var(--section); align-items: start; }
+.exp__cabeca { grid-column: 1 / 6; position: sticky; top: 15vh; display: grid; gap: 20px; }
+.exp__titulo { font-size: var(--step-head); }
+.exp__nota { margin: 0; max-width: 30ch; font-size: var(--step-lead); line-height: 1.25; letter-spacing: -0.02em; }
+.exp__corpo { grid-column: 7 / 13; position: relative; padding-left: 40px; }
+.exp__trilho { position: absolute; left: 0; top: 6px; bottom: 6px; width: 3px; background: var(--surface); }
+.exp__preenche { position: absolute; inset: 0; background: var(--accent-strong); transform-origin: 50% 0; }
+.exp__lista { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(48px, 7vw, 96px); }
+.exp__item { position: relative; display: grid; gap: 6px; }
+.exp__item::before { content: ''; position: absolute; left: -45px; top: 0.35em; width: 13px; height: 13px; border-radius: 50%; background: var(--ground); border: 3px solid var(--accent-strong); box-sizing: border-box; }
+.exp__periodo { font-weight: 400; color: var(--muted); font-variant-numeric: tabular-nums; }
+.exp__cargo { font-size: clamp(1.75rem, 1.1rem + 2vw, 3rem); letter-spacing: -0.04em; line-height: 1; }
+.exp__lugar { margin: 0; font-weight: 500; }
+.exp__texto { margin: 8px 0 0; max-width: 46ch; }
 
 /* ───────── Ferramentas ───────── */
 .stack { padding: 0 var(--margin) var(--section); }
@@ -623,6 +653,16 @@ h1, h2, h3 { text-wrap: balance; font-weight: 600; letter-spacing: -0.04em; line
 @keyframes marca-sobe { from { transform: translateY(40%); opacity: 0; } to { transform: none; opacity: 1; } }
 .footer__legal { font-size: var(--step-small); color: #a9b6c6; margin: 0; }
 
+/* ───────── Movimento reduzido: as entradas viram só esmaecimento, sem deslocamento ───────── */
+@media (prefers-reduced-motion: reduce) {
+  .js .lines [data-line], .js .hero-fade { opacity: 0; animation: so-aparece 700ms ease 200ms forwards; }
+  .js .hero-fade--late { animation-delay: 400ms; }
+  .js [data-reveal], .js .shutter, .js .folder__tech li { opacity: 0; transition: opacity 600ms ease; transition-delay: calc(var(--d, 0) * 80ms); }
+  .js [data-reveal].is-in, .js .shutter.is-in, .js .folder__tech.is-in li { opacity: 1; }
+  .folder__band > * { transform: none; }
+}
+@keyframes so-aparece { to { opacity: 1; } }
+
 /* ───────── Entradas ao rolar ───────── */
 @media (prefers-reduced-motion: no-preference) {
   .js [data-reveal] {
@@ -646,6 +686,9 @@ h1, h2, h3 { text-wrap: balance; font-weight: 600; letter-spacing: -0.04em; line
   .folders { padding-bottom: 0; }
 }
 @media (max-width: 1080px) {
+  .numeros__item { grid-column: span 6; }
+  .exp__cabeca { grid-column: 1 / 5; }
+  .exp__corpo { grid-column: 6 / 13; }
   .topbar__name { grid-column: 1 / 5; }
   .topbar__links { grid-column: 5 / 9; }
   .topbar__acoes { grid-column: 9 / 13; }
@@ -694,7 +737,10 @@ h1, h2, h3 { text-wrap: balance; font-weight: 600; letter-spacing: -0.04em; line
   .quadro__ficha { padding: 8px; font-size: 12px; }
   .quadro__ficha small { display: none; }
   .anp__corpo, .stream__corpo { grid-template-columns: 1fr; }
-  .anp__log, .stream__numeros { display: none; }
+  .anp__log { display: none; }
+  .stream__numeros div:not(:first-child) { display: none; }
+  .stream__log li { grid-template-columns: 4.6em minmax(0, 1fr); }
+  .stream__quem { display: none; }
   .notas__corpo { grid-template-columns: 1fr 1fr; }
   .notas__extratores { display: none; }
   .notas__abas .notas__aba { padding: 0 6px; }
@@ -711,5 +757,11 @@ h1, h2, h3 { text-wrap: balance; font-weight: 600; letter-spacing: -0.04em; line
   .contact__foot { flex-direction: column; gap: 12px; }
 
   .footer__col { grid-column: span 2; }
+  .numeros__item { grid-column: span 2; }
+  .numeros__valor { font-size: 12vw; }
+  .exp__cabeca, .exp__corpo { grid-column: 1 / -1; position: static; }
+  .exp__cabeca { margin-bottom: 40px; }
+  .exp__corpo { padding-left: 32px; }
+  .exp__item::before { left: -37px; }
 }
 .hl--block { display: block; }

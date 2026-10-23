@@ -24,16 +24,16 @@ export default function NotasUI() {
   const visto = useInView(caixa, { once: true, amount: 0.5 })
   const reduced = useReducedMotion()
   const [atual, setAtual] = useState(0)
-  const [lidas, setLidas] = useState(reduced ? checagens.length : 0)
+  const [lidas, setLidas] = useState(0)
   const [leitura, setLeitura] = useState(0)
 
   // a cada troca de versão, o "escaneamento" passa e as checagens acendem uma a uma
   useEffect(() => {
-    if (reduced || !visto) return
+    if (!visto) return
     setLidas(0)
     const timers = checagens.map((_, i) => window.setTimeout(() => setLidas(i + 1), 900 + i * 260))
     return () => timers.forEach(clearTimeout)
-  }, [leitura, visto, reduced])
+  }, [leitura, visto])
 
   const escolher = (i: number) => {
     setAtual(i)

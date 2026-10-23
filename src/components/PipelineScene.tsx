@@ -1,6 +1,6 @@
 import { useRef, type CSSProperties, type ReactNode } from 'react'
 import { motion, useScroll, useTransform, type MotionValue } from 'framer-motion'
-import { useStaticMode } from '../hooks/useStaticMode'
+import { useReducedMotion, useStaticMode } from '../hooks/useStaticMode'
 
 const fields = [
   { key: 'emitente_nome', value: '"Padaria Pão de Cada Dia"' },
@@ -39,7 +39,7 @@ function JsonLine({ p, i, k, v, last }: { p: MotionValue<number>; i: number; k: 
   const o = useRange(p, 0.36 + i * 0.045, 0.44 + i * 0.045)
   const x = useRange(p, 0.36 + i * 0.045, 0.44 + i * 0.045, -24, 0)
   return (
-    <motion.span style={{ opacity: o, x }}>
+    <motion.span style={{ opacity: o, x: useReducedMotion() ? 0 : x }}>
       {'  '}<span className="k">"{k}"</span>: {v}{last ? '' : ','}
     </motion.span>
   )
@@ -56,7 +56,7 @@ function Step({ p, i }: { p: MotionValue<number>; i: number }) {
   const x = useTransform(p, input, input.length === 3 && i === 0 ? [12, 12, 0] : input.length === 3 ? [0, 12, 12] : [0, 12, 12, 0])
   const step = steps[i]
   return (
-    <motion.p className="scene__step" style={{ opacity, x }}>
+    <motion.p className="scene__step" style={{ opacity, x: useReducedMotion() ? 0 : x }}>
       <b>{step.lead}</b> {step.text}
     </motion.p>
   )
@@ -65,6 +65,7 @@ function Step({ p, i }: { p: MotionValue<number>; i: number }) {
 export default function PipelineScene() {
   const ref = useRef<HTMLElement>(null)
   const isStatic = useStaticMode()
+  const reduced = useReducedMotion()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] })
   const live = useTransform(scrollYProgress, (v) => v)
   const done = useTransform(scrollYProgress, () => 1)
@@ -138,7 +139,7 @@ export default function PipelineScene() {
                 <tr><th scope="col">documento</th><th scope="col">versão</th><th scope="col">campos certos</th></tr>
               </thead>
               <tbody>
-                <motion.tr className="is-new" style={{ opacity: rowO, y: rowY }}>
+                <motion.tr className="is-new" style={{ opacity: rowO, y: reduced ? 0 : rowY }}>
                   <td>nota-044</td><td>foto ruim</td><td>9 de 9</td>
                 </motion.tr>
                 {rows.map((r) => (

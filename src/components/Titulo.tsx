@@ -18,7 +18,7 @@ export default function Titulo({ texto, id, className, nivel = 'h2', style }: Pr
       className={`titulo ${className ?? ''}`}
       style={style}
       aria-label={texto}
-      initial={reduced ? false : 'fora'}
+      initial="fora"
       whileInView="dentro"
       viewport={{ once: true, amount: 0.6 }}
     >
@@ -27,7 +27,7 @@ export default function Titulo({ texto, id, className, nivel = 'h2', style }: Pr
           <span className="titulo__mascara" aria-hidden>
             <motion.span
               className="titulo__palavra"
-              variants={{ fora: { y: '110%' }, dentro: { y: '0%' } }}
+              variants={reduced ? { fora: { opacity: 0 }, dentro: { opacity: 1 } } : { fora: { y: '110%' }, dentro: { y: '0%' } }}
               transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: i * 0.07 }}
             >
               {p}

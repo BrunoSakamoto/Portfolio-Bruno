@@ -65,7 +65,7 @@ export default function RastreadorUI() {
                   layoutId={f.id}
                   key={f.id}
                   className="quadro__ficha"
-                  drag={!reduced}
+                  drag
                   dragSnapToOrigin
                   dragElastic={0.6}
                   whileDrag={{ scale: 1.04, rotate: -2, zIndex: 5, cursor: 'grabbing' }}

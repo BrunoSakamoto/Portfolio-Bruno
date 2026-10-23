@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useInView } from 'framer-motion'
-import { useReducedMotion } from '../../hooks/useStaticMode'
+import MapaRio from './MapaRio'
 
 // Trecho real dos logs do produtor e do processador em 22/10/2026, das 10h04 às 10h07.
 // Às 10h04:51 a API da Prefeitura respondeu 500; a busca seguinte pediu o intervalo desde a última
@@ -27,11 +27,12 @@ function texto(l: Linha) {
 export default function StreamUI() {
   const caixa = useRef<HTMLDivElement>(null)
   const visto = useInView(caixa, { amount: 0.4 })
-  const reduced = useReducedMotion()
-  const [relogio, setRelogio] = useState(reduced ? DURACAO : 0)
+  const [relogio, setRelogio] = useState(0)
+  const [horaMapa, setHoraMapa] = useState('9h41')
+  const aoMudarHora = useCallback((h: string) => setHoraMapa(h), [])
 
   useEffect(() => {
-    if (reduced || !visto) return
+    if (!visto) return
     let raf = 0
     const t0 = performance.now() - (relogio * 1000) / ACELERA
     const tick = (t: number) => {
@@ -41,7 +42,7 @@ export default function StreamUI() {
     raf = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(raf)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visto, reduced])
+  }, [visto])
 
   const visiveis = LOG.filter((l) => seg(l.t) - T0 <= relogio)
   const gravadas = visiveis.reduce((s, l) => s + (l.tipo === 'lote' ? l.novas : 0), 0)
@@ -53,12 +54,26 @@ export default function StreamUI() {
   return (
     <div className="ui stream" data-ui ref={caixa}>
       <div className="ui__bar">
-        <span>docker compose logs -f</span>
-        <span className="ui__status"><i className="ui__dot" aria-hidden /> {hora}</span>
+        <span>onibus-tempo-real</span>
+        <span className="ui__status"><i className="ui__dot" aria-hidden /> replay de dados reais</span>
       </div>
       <div className="stream__corpo">
-        <ol className="stream__log" aria-label="Log do produtor e do processador">
-          {visiveis.slice(-9).map((l, i) => {
+        <div className="stream__mapa">
+          <MapaRio onHora={aoMudarHora} />
+          <p className="stream__hora"><b>{horaMapa}</b> GPS de 22/10, acelerado</p>
+          <ul className="stream__legenda" aria-label="Legenda">
+            <li><i style={{ background: '#8ccaff' }} />andando</li>
+            <li><i style={{ background: '#4d86d6' }} />devagar</li>
+            <li><i style={{ background: '#f4f7fb' }} />parado</li>
+          </ul>
+          <dl className="stream__numeros">
+            <div><dt>posições gravadas</dt><dd>{n(gravadas)}</dd></div>
+            <div><dt>lotes confirmados</dt><dd>{lotes.length}</dd></div>
+            <div><dt>API até o banco</dt><dd>{ultimoAtraso && ultimoAtraso.tipo === 'lote' ? `${String(ultimoAtraso.atraso).replace('.', ',')} s` : '–'}</dd></div>
+          </dl>
+        </div>
+        <ol className="stream__log" aria-label={`Log do produtor e do processador, ${hora}`}>
+          {visiveis.slice(-4).map((l, i) => {
             const [quem, msg] = texto(l)
             return (
               <li key={`${l.t}-${i}-${visiveis.length}`} className={`is-${l.tipo}`}>
@@ -69,11 +84,6 @@ export default function StreamUI() {
             )
           })}
         </ol>
-        <dl className="stream__numeros">
-          <div><dt>posições gravadas</dt><dd>{n(gravadas)}</dd></div>
-          <div><dt>lotes confirmados</dt><dd>{lotes.length}</dd></div>
-          <div><dt>API até o banco</dt><dd>{ultimoAtraso && ultimoAtraso.tipo === 'lote' ? `${String(ultimoAtraso.atraso).replace('.', ',')} s` : '–'}</dd></div>
-        </dl>
       </div>
     </div>
   )

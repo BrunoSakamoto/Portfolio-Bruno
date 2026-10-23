@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 
-const QUERY = '(max-width: 720px), (prefers-reduced-motion: reduce)'
+// Só no telefone a cena fica parada: com movimento reduzido ela continua ligada à rolagem, sem deslocamentos.
+const QUERY = '(max-width: 720px)'
 
-/** Verdadeiro no telefone ou com movimento reduzido: as cenas mostram a composição final, parada. */
+/** Verdadeiro no telefone: as cenas mostram a composição final, parada. */
 export function useStaticMode() {
   const [isStatic, setStatic] = useState(() =>
     typeof window !== 'undefined' ? window.matchMedia(QUERY).matches : false,

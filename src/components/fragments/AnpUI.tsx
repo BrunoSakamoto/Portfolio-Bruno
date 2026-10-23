@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import { useInView } from 'framer-motion'
-import { useReducedMotion } from '../../hooks/useStaticMode'
 
 // Números da execução real com os dados da ANP (2024 a 2026): cerca de 2,1 milhões de coletas e 27 testes.
 const tarefas = [
@@ -16,13 +15,12 @@ type Estado = 'fila' | 'rodando' | 'ok'
 export default function AnpUI() {
   const caixa = useRef<HTMLDivElement>(null)
   const visto = useInView(caixa, { once: true, amount: 0.5 })
-  const reduced = useReducedMotion()
   const [rodada, setRodada] = useState(0)
-  const [passo, setPasso] = useState(reduced ? 99 : -1) // índice da tarefa rodando; 99 = tudo pronto
+  const [passo, setPasso] = useState(-1) // índice da tarefa rodando; 99 = tudo pronto
   const [progresso, setProgresso] = useState(0)
 
   useEffect(() => {
-    if (reduced || !visto) return
+    if (!visto) return
     let cancelado = false
     let raf = 0
     const rodar = async () => {
@@ -48,7 +46,7 @@ export default function AnpUI() {
       cancelado = true
       cancelAnimationFrame(raf)
     }
-  }, [visto, reduced, rodada])
+  }, [visto, rodada])
 
   const estado = (i: number): Estado => (passo === 99 || i < passo ? 'ok' : i === passo ? 'rodando' : 'fila')
   const milhoes = passo === 99 || passo > 1 ? MILHOES : passo === 1 ? MILHOES * progresso : 0
@@ -101,7 +99,7 @@ export default function AnpUI() {
               setProgresso(0)
               setRodada((r) => r + 1)
             }}
-            disabled={!pronto || reduced}
+            disabled={!pronto}
           >
             Rodar a DAG de novo
           </button>
